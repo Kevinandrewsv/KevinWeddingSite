@@ -241,9 +241,23 @@ const Navbar = () => {
                 </NavLink>
               ))}
 
-              <div className="mt-2 rounded-2xl border border-rose-100/80 bg-white/70 px-4 py-3 text-center text-xs font-bold leading-5 text-slate-500 backdrop-blur-xl lg:hidden">
-                Admin panel is desktop only.
-              </div>
+              <NavLink
+                to="/admin/login"
+                onClick={handleNavClick}
+                className="group relative mt-2 flex items-center justify-center gap-2 overflow-hidden rounded-2xl border border-white/75 bg-white/70 px-4 py-3.5 text-sm font-black text-rose-700 shadow-[0_12px_24px_rgba(244,63,94,0.10)] backdrop-blur-xl transition hover:bg-white/95 hover:text-rose-800"
+                aria-label="Admin login"
+              >
+                <span className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/95 via-rose-50/70 to-pink-100/70" />
+                <span
+                  className="pointer-events-none absolute inset-0 rounded-2xl"
+                  style={{
+                    boxShadow:
+                      "inset 1px 1px 1px rgba(255,255,255,0.82), inset -1px -1px 1px rgba(255,255,255,0.45)",
+                  }}
+                />
+                <ShieldCheck size={18} className="relative transition group-hover:rotate-6" />
+                <span className="relative">Admin Panel</span>
+              </NavLink>
             </div>
           </div>
         )}
