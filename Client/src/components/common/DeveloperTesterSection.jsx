@@ -36,19 +36,19 @@ const DeveloperTesterSection = () => {
           </div>
 
           <div className="pointer-events-none absolute left-6 top-6 h-2 w-2 rounded-full bg-violet-400/70 shadow-[0_0_18px_rgba(139,92,246,0.45)]" />
-          <div className="pointer-events-none absolute left-[29%] top-14 h-1.5 w-1.5 rounded-full bg-fuchsia-400/60" />
-          <div className="pointer-events-none absolute right-[24%] top-16 h-2 w-2 rounded-full bg-rose-400/60" />
-          <div className="pointer-events-none absolute bottom-9 left-16 h-3 w-3 rounded-full bg-violet-500/65" />
-          <div className="pointer-events-none absolute bottom-14 right-20 h-2 w-2 rounded-full bg-rose-400/70" />
+          <div className="pointer-events-none absolute left-[29%] top-14 hidden h-1.5 w-1.5 rounded-full bg-fuchsia-400/60 sm:block" />
+          <div className="pointer-events-none absolute right-[24%] top-16 hidden h-2 w-2 rounded-full bg-rose-400/60 sm:block" />
+          <div className="pointer-events-none absolute bottom-9 left-16 hidden h-3 w-3 rounded-full bg-violet-500/65 sm:block" />
+          <div className="pointer-events-none absolute bottom-14 right-20 hidden h-2 w-2 rounded-full bg-rose-400/70 sm:block" />
 
-          {/* Desktop / large screens */}
-          <div className="relative z-20 hidden h-[560px] overflow-hidden px-8 py-8 lg:block xl:h-[610px] xl:px-12 xl:py-10">
+          {/* Laptop / Desktop */}
+          <div className="relative z-20 hidden h-[540px] overflow-hidden px-8 py-8 lg:block xl:h-[600px] xl:px-12 xl:py-10 2xl:h-[620px]">
             <motion.div
               initial={{ opacity: 0, y: 22 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.22 }}
               transition={{ duration: 0.75 }}
-              className="absolute left-1/2 top-[7.2%] z-20 flex h-[145px] w-[27%] max-w-[320px] -translate-x-1/2 items-center justify-center xl:top-[6.8%] xl:h-[168px] xl:max-w-[365px]"
+              className="absolute left-1/2 top-[7.2%] z-20 flex h-[138px] w-[26%] max-w-[305px] -translate-x-1/2 items-center justify-center xl:top-[6.8%] xl:h-[160px] xl:max-w-[350px] 2xl:max-w-[365px]"
             >
               <img
                 src={infiniteLogo}
@@ -63,7 +63,7 @@ const DeveloperTesterSection = () => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, amount: 0.22 }}
               transition={{ duration: 0.75, delay: 0.08 }}
-              className="absolute left-[7%] top-[27%] z-20 flex h-[280px] w-[25.5%] max-w-[290px] items-center justify-center xl:left-[7.2%] xl:top-[26%] xl:h-[315px] xl:max-w-[325px]"
+              className="absolute left-[7.5%] top-[27%] z-20 flex h-[265px] w-[25%] max-w-[275px] items-center justify-center xl:left-[7.2%] xl:top-[26%] xl:h-[305px] xl:max-w-[315px] 2xl:max-w-[330px]"
             >
               <img
                 src={developerBoy}
@@ -78,7 +78,7 @@ const DeveloperTesterSection = () => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, amount: 0.22 }}
               transition={{ duration: 0.75, delay: 0.12 }}
-              className="absolute right-[7%] top-[27%] z-20 flex h-[280px] w-[25.5%] max-w-[290px] items-center justify-center xl:right-[7.2%] xl:top-[26%] xl:h-[315px] xl:max-w-[325px]"
+              className="absolute right-[7.5%] top-[27%] z-20 flex h-[265px] w-[25%] max-w-[275px] items-center justify-center xl:right-[7.2%] xl:top-[26%] xl:h-[305px] xl:max-w-[315px] 2xl:max-w-[330px]"
             >
               <img
                 src={testerGirl}
@@ -93,7 +93,7 @@ const DeveloperTesterSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.22 }}
               transition={{ duration: 0.75, delay: 0.16 }}
-              className="absolute left-1/2 top-[41.5%] z-30 flex h-[122px] w-[35%] max-w-[430px] -translate-x-1/2 items-center justify-center xl:top-[41%] xl:h-[138px] xl:max-w-[475px]"
+              className="absolute left-1/2 top-[41%] z-30 flex h-[124px] w-[36%] max-w-[430px] -translate-x-1/2 items-center justify-center xl:top-[40.5%] xl:h-[140px] xl:max-w-[480px]"
             >
               <img
                 src={centerText}
@@ -108,25 +108,25 @@ const DeveloperTesterSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.22 }}
               transition={{ duration: 0.75, delay: 0.2 }}
-              className="absolute bottom-[6.4%] left-1/2 z-20 flex h-[92px] w-[52%] max-w-[650px] -translate-x-1/2 items-center justify-center overflow-hidden xl:bottom-[6.2%] xl:h-[108px] xl:max-w-[720px]"
+              className="absolute bottom-[6.3%] left-1/2 z-20 flex h-[96px] w-[52%] max-w-[640px] -translate-x-1/2 items-center justify-center overflow-visible xl:bottom-[6%] xl:h-[110px] xl:max-w-[720px]"
             >
               <img
                 src={bottomMiddleLogos}
                 alt="Developer tester journey icons"
                 draggable="false"
-                className="block h-auto w-full translate-y-[-2px] scale-[1.18] select-none object-contain drop-shadow-[0_14px_28px_rgba(236,72,153,0.09)]"
+                className="block h-full w-full translate-x-[2px] select-none object-contain drop-shadow-[0_14px_28px_rgba(236,72,153,0.09)]"
               />
             </motion.div>
           </div>
 
-          {/* Mobile / tablet portrait */}
+          {/* Mobile / Tablet */}
           <div className="relative z-20 flex flex-col items-center overflow-hidden px-4 pb-7 pt-5 sm:px-6 sm:pb-8 sm:pt-6 md:px-8 md:pb-9 md:pt-7 lg:hidden">
             <motion.div
               initial={{ opacity: 0, y: 18 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.22 }}
               transition={{ duration: 0.7 }}
-              className="flex h-[108px] w-[74%] max-w-[270px] items-center justify-center sm:h-[130px] sm:max-w-[330px] md:h-[150px] md:max-w-[380px]"
+              className="flex h-[108px] w-[74%] max-w-[270px] items-center justify-center sm:h-[130px] sm:max-w-[330px] md:h-[152px] md:max-w-[390px]"
             >
               <img
                 src={infiniteLogo}
@@ -136,7 +136,7 @@ const DeveloperTesterSection = () => {
               />
             </motion.div>
 
-            <div className="mt-3 grid w-full grid-cols-2 items-end gap-3 sm:mt-4 sm:gap-5 md:gap-6">
+            <div className="mt-3 grid w-full grid-cols-2 items-end gap-3 sm:mt-4 sm:gap-5 md:mt-5 md:max-w-[660px] md:gap-8">
               <motion.div
                 initial={{ opacity: 0, x: -24 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -148,7 +148,7 @@ const DeveloperTesterSection = () => {
                   src={developerBoy}
                   alt="Developer illustration"
                   draggable="false"
-                  className="block w-full max-w-[156px] select-none object-contain drop-shadow-[0_14px_24px_rgba(79,70,229,0.12)] min-[390px]:max-w-[168px] sm:max-w-[220px] md:max-w-[270px]"
+                  className="block w-full max-w-[156px] select-none object-contain drop-shadow-[0_14px_24px_rgba(79,70,229,0.12)] min-[390px]:max-w-[168px] sm:max-w-[220px] md:max-w-[275px]"
                 />
               </motion.div>
 
@@ -163,7 +163,7 @@ const DeveloperTesterSection = () => {
                   src={testerGirl}
                   alt="Tester illustration"
                   draggable="false"
-                  className="block w-full max-w-[156px] select-none object-contain drop-shadow-[0_14px_24px_rgba(244,63,94,0.12)] min-[390px]:max-w-[168px] sm:max-w-[220px] md:max-w-[270px]"
+                  className="block w-full max-w-[156px] select-none object-contain drop-shadow-[0_14px_24px_rgba(244,63,94,0.12)] min-[390px]:max-w-[168px] sm:max-w-[220px] md:max-w-[275px]"
                 />
               </motion.div>
             </div>
@@ -173,7 +173,7 @@ const DeveloperTesterSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.22 }}
               transition={{ duration: 0.7, delay: 0.16 }}
-              className="mt-4 flex h-[94px] w-[92%] max-w-[390px] items-center justify-center sm:mt-5 sm:h-[112px] sm:max-w-[440px] md:h-[126px] md:max-w-[500px]"
+              className="mt-4 flex h-[96px] w-[94%] max-w-[400px] items-center justify-center sm:mt-5 sm:h-[114px] sm:max-w-[455px] md:h-[130px] md:max-w-[520px]"
             >
               <img
                 src={centerText}
@@ -188,13 +188,13 @@ const DeveloperTesterSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.22 }}
               transition={{ duration: 0.7, delay: 0.2 }}
-              className="mt-4 flex h-[64px] w-[86%] max-w-[460px] items-center justify-center overflow-hidden sm:mt-5 sm:h-[78px] sm:max-w-[540px] md:h-[88px] md:max-w-[620px]"
+              className="mt-4 flex h-[74px] w-full max-w-[350px] items-center justify-center overflow-visible sm:mt-5 sm:h-[90px] sm:max-w-[520px] md:h-[104px] md:max-w-[650px]"
             >
               <img
                 src={bottomMiddleLogos}
                 alt="Developer tester journey icons"
                 draggable="false"
-                className="block h-auto w-full translate-y-[-1px] scale-[1.13] select-none object-contain"
+                className="block h-auto w-full select-none object-contain"
               />
             </motion.div>
           </div>
