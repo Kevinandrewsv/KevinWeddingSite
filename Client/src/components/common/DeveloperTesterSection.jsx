@@ -23,13 +23,13 @@ const DeveloperTesterSection = () => {
 
           <div className="pointer-events-none absolute inset-[1px] rounded-[calc(1.75rem-1px)] bg-[radial-gradient(circle_at_18%_50%,rgba(124,58,237,0.13),transparent_27%),radial-gradient(circle_at_83%_50%,rgba(244,63,94,0.14),transparent_28%),radial-gradient(circle_at_50%_76%,rgba(236,72,153,0.07),transparent_28%)] sm:rounded-[calc(2.1rem-1px)] md:rounded-[calc(2.3rem-1px)] lg:rounded-[calc(2.6rem-1px)]" />
 
-          <div className="pointer-events-none absolute left-0 top-0 h-full w-[34%] opacity-45">
+          <div className="pointer-events-none absolute left-0 top-0 hidden h-full w-[34%] opacity-45 lg:block">
             <div className="absolute left-[-7rem] top-[-5rem] h-80 w-80 rounded-full border border-violet-200/45" />
             <div className="absolute left-[-5rem] top-[-3rem] h-72 w-72 rounded-full border border-violet-200/30" />
             <div className="absolute left-[-3rem] top-[-1rem] h-64 w-64 rounded-full border border-violet-200/20" />
           </div>
 
-          <div className="pointer-events-none absolute right-0 bottom-0 h-full w-[34%] opacity-40">
+          <div className="pointer-events-none absolute right-0 bottom-0 hidden h-full w-[34%] opacity-40 lg:block">
             <div className="absolute bottom-[-7rem] right-[-7rem] h-80 w-80 rounded-full border border-pink-200/45" />
             <div className="absolute bottom-[-5rem] right-[-5rem] h-72 w-72 rounded-full border border-pink-200/30" />
             <div className="absolute bottom-[-3rem] right-[-3rem] h-64 w-64 rounded-full border border-pink-200/20" />
@@ -108,25 +108,25 @@ const DeveloperTesterSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.22 }}
               transition={{ duration: 0.75, delay: 0.2 }}
-              className="absolute bottom-[5.4%] left-1/2 z-20 flex h-[110px] w-[56%] max-w-[680px] -translate-x-1/2 items-center justify-center xl:bottom-[5.2%] xl:h-[125px] xl:max-w-[760px]"
+              className="absolute bottom-[6.4%] left-1/2 z-20 flex h-[92px] w-[52%] max-w-[650px] -translate-x-1/2 items-center justify-center overflow-hidden xl:bottom-[6.2%] xl:h-[108px] xl:max-w-[720px]"
             >
               <img
                 src={bottomMiddleLogos}
                 alt="Developer tester journey icons"
                 draggable="false"
-                className="block max-h-full w-full select-none object-contain drop-shadow-[0_16px_32px_rgba(236,72,153,0.10)]"
+                className="block h-auto w-full translate-y-[-2px] scale-[1.18] select-none object-contain drop-shadow-[0_14px_28px_rgba(236,72,153,0.09)]"
               />
             </motion.div>
           </div>
 
           {/* Mobile / tablet portrait */}
-          <div className="relative z-20 flex flex-col items-center overflow-hidden px-4 py-6 sm:px-6 sm:py-7 md:px-8 md:py-8 lg:hidden">
+          <div className="relative z-20 flex flex-col items-center overflow-hidden px-4 pb-7 pt-5 sm:px-6 sm:pb-8 sm:pt-6 md:px-8 md:pb-9 md:pt-7 lg:hidden">
             <motion.div
-              initial={{ opacity: 0, y: 22 }}
+              initial={{ opacity: 0, y: 18 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.22 }}
-              transition={{ duration: 0.75 }}
-              className="flex h-[112px] w-[76%] max-w-[300px] items-center justify-center sm:h-[136px] sm:max-w-[345px] md:h-[155px] md:max-w-[385px]"
+              transition={{ duration: 0.7 }}
+              className="flex h-[108px] w-[74%] max-w-[270px] items-center justify-center sm:h-[130px] sm:max-w-[330px] md:h-[150px] md:max-w-[380px]"
             >
               <img
                 src={infiniteLogo}
@@ -136,57 +136,65 @@ const DeveloperTesterSection = () => {
               />
             </motion.div>
 
-            <div className="mt-1 grid w-full grid-cols-2 items-end gap-2 sm:mt-2 sm:gap-4">
-              <motion.img
-                src={developerBoy}
-                alt="Developer illustration"
-                draggable="false"
-                initial={{ opacity: 0, x: -28 }}
+            <div className="mt-3 grid w-full grid-cols-2 items-end gap-3 sm:mt-4 sm:gap-5 md:gap-6">
+              <motion.div
+                initial={{ opacity: 0, x: -24 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, amount: 0.22 }}
                 transition={{ duration: 0.7, delay: 0.08 }}
-                className="mx-auto w-full max-w-[175px] select-none object-contain sm:max-w-[220px] md:max-w-[260px]"
-              />
+                className="flex justify-end"
+              >
+                <img
+                  src={developerBoy}
+                  alt="Developer illustration"
+                  draggable="false"
+                  className="block w-full max-w-[156px] select-none object-contain drop-shadow-[0_14px_24px_rgba(79,70,229,0.12)] min-[390px]:max-w-[168px] sm:max-w-[220px] md:max-w-[270px]"
+                />
+              </motion.div>
 
-              <motion.img
-                src={testerGirl}
-                alt="Tester illustration"
-                draggable="false"
-                initial={{ opacity: 0, x: 28 }}
+              <motion.div
+                initial={{ opacity: 0, x: 24 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, amount: 0.22 }}
                 transition={{ duration: 0.7, delay: 0.12 }}
-                className="mx-auto w-full max-w-[175px] select-none object-contain sm:max-w-[220px] md:max-w-[260px]"
-              />
+                className="flex justify-start"
+              >
+                <img
+                  src={testerGirl}
+                  alt="Tester illustration"
+                  draggable="false"
+                  className="block w-full max-w-[156px] select-none object-contain drop-shadow-[0_14px_24px_rgba(244,63,94,0.12)] min-[390px]:max-w-[168px] sm:max-w-[220px] md:max-w-[270px]"
+                />
+              </motion.div>
             </div>
 
             <motion.div
-              initial={{ opacity: 0, y: 22 }}
+              initial={{ opacity: 0, y: 18 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.22 }}
               transition={{ duration: 0.7, delay: 0.16 }}
-              className="mt-1 flex h-[96px] w-[90%] max-w-[410px] items-center justify-center sm:mt-2 sm:h-[112px] md:max-w-[465px]"
+              className="mt-4 flex h-[94px] w-[92%] max-w-[390px] items-center justify-center sm:mt-5 sm:h-[112px] sm:max-w-[440px] md:h-[126px] md:max-w-[500px]"
             >
               <img
                 src={centerText}
                 alt="One writes the logic, one perfects the journey"
                 draggable="false"
-                className="block max-h-full w-full select-none object-contain"
+                className="block max-h-full w-full select-none object-contain drop-shadow-[0_8px_18px_rgba(30,41,59,0.07)]"
               />
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, y: 22 }}
+              initial={{ opacity: 0, y: 18 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.22 }}
               transition={{ duration: 0.7, delay: 0.2 }}
-              className="mt-2 flex h-[78px] w-[92%] max-w-[560px] items-center justify-center sm:mt-3 sm:h-[94px] md:h-[102px]"
+              className="mt-4 flex h-[64px] w-[86%] max-w-[460px] items-center justify-center overflow-hidden sm:mt-5 sm:h-[78px] sm:max-w-[540px] md:h-[88px] md:max-w-[620px]"
             >
               <img
                 src={bottomMiddleLogos}
                 alt="Developer tester journey icons"
                 draggable="false"
-                className="block max-h-full w-full select-none object-contain"
+                className="block h-auto w-full translate-y-[-1px] scale-[1.13] select-none object-contain"
               />
             </motion.div>
           </div>
