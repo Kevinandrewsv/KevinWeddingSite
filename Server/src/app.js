@@ -15,17 +15,22 @@ const { notFound, errorHandler } = require("./Middleware/errorMiddleware");
 
 const app = express();
 
-// CORS setup
+const envAllowedOrigins = process.env.CLIENT_URLS
+  ? process.env.CLIENT_URLS.split(",").map((url) => url.trim()).filter(Boolean)
+  : [];
+
 const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:5174",
+  "http://localhost:3000",
   process.env.CLIENT_URL,
+  ...envAllowedOrigins,
 ].filter(Boolean);
 
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Allow requests from Postman / mobile apps / same-origin server requests
+      // Allow Postman, server-to-server requests, health checks, and mobile app requests
       if (!origin) {
         return callback(null, true);
       }
@@ -34,11 +39,19 @@ app.use(
         return callback(null, true);
       }
 
-      return callback(new Error("Not allowed by CORS"));
+      console.error("CORS blocked origin:", origin);
+      console.error("Allowed origins:", allowedOrigins);
+
+      return callback(new Error(`Not allowed by CORS: ${origin}`));
     },
     credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
+// Handle preflight requests
+app.options("*", cors());
 
 // Body parsers
 app.use(express.json({ limit: "10mb" }));
