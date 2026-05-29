@@ -8,15 +8,11 @@ import {
   Crown,
   Gem,
   Heart,
-  HeartHandshake,
   Loader2,
   MessageCircleHeart,
-  Quote,
   Sparkles,
-  Star,
   Trophy,
   Vote,
-  WandSparkles,
 } from "lucide-react";
 
 import { useApprovedCircleStories } from "../../hooks/useCircleOfLove";
@@ -45,31 +41,28 @@ const createVisitorId = () => {
 
 const sideTheme = {
   groom: {
-    label: "Kevin Side",
-    fullLabel: "Kevin's Circle",
-    icon: Crown,
+    label: "From Kevin’s Circle",
+    fullLabel: "Kevin’s Circle",
     badgeClass: "border-blue-100 bg-blue-50 text-blue-700",
-    iconClass: "from-blue-500 via-sky-500 to-cyan-400",
     glowClass: "bg-blue-100/60",
-    softClass: "from-white via-white to-blue-50/55",
+    softClass: "from-white via-sky-50/75 to-blue-50/70",
+    avatarClass: "bg-blue-50 text-blue-700",
   },
   bride: {
-    label: "Jenith Side",
-    fullLabel: "Jenith's Circle",
-    icon: Gem,
+    label: "From Jenith’s Circle",
+    fullLabel: "Jenith’s Circle",
     badgeClass: "border-pink-100 bg-pink-50 text-pink-700",
-    iconClass: "from-pink-500 via-rose-500 to-fuchsia-400",
-    glowClass: "bg-pink-100/55",
-    softClass: "from-white via-white to-rose-50/55",
+    glowClass: "bg-pink-100/60",
+    softClass: "from-white via-rose-50/75 to-pink-50/70",
+    avatarClass: "bg-pink-50 text-pink-700",
   },
   both: {
-    label: "Both Sides",
-    fullLabel: "Loved by Both",
-    icon: HeartHandshake,
+    label: "Loved by Both",
+    fullLabel: "Shared Circle",
     badgeClass: "border-rose-100 bg-rose-50 text-rose-700",
-    iconClass: "from-rose-500 via-red-500 to-pink-500",
-    glowClass: "bg-rose-100/55",
-    softClass: "from-white via-white to-slate-50",
+    glowClass: "bg-rose-100/60",
+    softClass: "from-white via-rose-50/70 to-amber-50/60",
+    avatarClass: "bg-rose-50 text-rose-700",
   },
 };
 
@@ -117,17 +110,17 @@ const useResponsiveCardSize = () => {
       const viewport = window.innerWidth;
 
       if (viewport < 420) {
-        setSize({ width: 282, height: 340 });
+        setSize({ width: 282, height: 354 });
         return;
       }
 
       if (viewport < 640) {
-        setSize({ width: 320, height: 334 });
+        setSize({ width: 320, height: 346 });
         return;
       }
 
       if (viewport < 1024) {
-        setSize({ width: 390, height: 325 });
+        setSize({ width: 390, height: 330 });
         return;
       }
 
@@ -162,7 +155,6 @@ const CardStack = ({
   autoAdvance = true,
   intervalMs = 2900,
   pauseOnHover = true,
-  showDots = true,
 }) => {
   const reduceMotion = useReducedMotion();
   const { width: cardWidth, height: cardHeight } = useResponsiveCardSize();
@@ -178,6 +170,11 @@ const CardStack = ({
   const maxOffset = Math.max(0, Math.floor(maxVisible / 2));
   const cardSpacing = Math.max(16, Math.round(cardWidth * (1 - overlap)));
   const stepDeg = maxOffset > 0 ? spreadDeg / maxOffset : 0;
+  const cardBottomOffset = cardWidth < 340 ? 50 : cardWidth < 400 ? 42 : 36;
+  const stackHeight = Math.max(
+    cardHeight + cardBottomOffset + 54,
+    cardWidth < 340 ? 440 : 420
+  );
 
   const canGoPrev = loop || active > 0;
   const canGoNext = loop || active < length - 1;
@@ -200,7 +197,7 @@ const CardStack = ({
       if (loop || active < length - 1) {
         next();
       }
-    }, Math.max(900, intervalMs));
+    }, Math.max(1200, intervalMs));
 
     return () => window.clearInterval(interval);
   }, [
@@ -228,31 +225,13 @@ const CardStack = ({
       onMouseLeave={() => setHovering(false)}
     >
       <div
-        className="relative w-full bg-white outline-none"
-        style={{ height: Math.max(388, cardHeight + 76) }}
+        className="relative w-full bg-transparent outline-none"
+        style={{ height: stackHeight }}
         tabIndex={0}
         onKeyDown={handleKeyDown}
       >
-        <button
-          type="button"
-          onClick={previous}
-          className="absolute left-1 top-1/2 z-[150] hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-rose-100 bg-white/95 text-rose-700 shadow-lg shadow-rose-100 transition hover:-translate-x-0.5 hover:bg-rose-50 sm:flex"
-          aria-label="Previous featured story"
-        >
-          <ArrowLeft size={18} />
-        </button>
-
-        <button
-          type="button"
-          onClick={next}
-          className="absolute right-1 top-1/2 z-[150] hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-rose-100 bg-white/95 text-rose-700 shadow-lg shadow-rose-100 transition hover:translate-x-0.5 hover:bg-rose-50 sm:flex"
-          aria-label="Next featured story"
-        >
-          <ArrowRight size={18} />
-        </button>
-
         <div
-          className="absolute inset-0 flex items-end justify-center bg-white px-1 pb-1"
+          className="absolute inset-0 flex items-end justify-center px-1"
           style={{ perspective: `${perspectivePx}px`, overflow: "visible" }}
         >
           <AnimatePresence initial={false}>
@@ -298,14 +277,15 @@ const CardStack = ({
                 <motion.div
                   key={item.id}
                   className={cn(
-                    "absolute bottom-0 overflow-hidden rounded-[2rem] border border-rose-100 bg-white will-change-transform select-none",
+                    "absolute overflow-hidden rounded-[2rem] border border-white/80 bg-white will-change-transform select-none",
                     isActive
-                      ? "cursor-grab active:cursor-grabbing shadow-[0_28px_80px_rgba(190,18,60,0.16)]"
-                      : "cursor-pointer shadow-[0_18px_44px_rgba(15,23,42,0.08)]"
+                      ? "cursor-grab active:cursor-grabbing shadow-[0_10px_24px_rgba(15,23,42,0.04)] sm:shadow-[0_26px_74px_rgba(15,23,42,0.16)]"
+                      : "cursor-pointer shadow-[0_8px_18px_rgba(15,23,42,0.025)] sm:shadow-[0_16px_38px_rgba(15,23,42,0.08)]"
                   )}
                   style={{
                     width: cardWidth,
                     height: cardHeight,
+                    bottom: cardBottomOffset,
                     zIndex,
                     transformStyle: "preserve-3d",
                   }}
@@ -322,7 +302,7 @@ const CardStack = ({
                         }
                   }
                   animate={{
-                    opacity: isActive ? 1 : 0.92,
+                    opacity: isActive ? 1 : 0.96,
                     x,
                     y: y + lift,
                     rotateZ,
@@ -358,26 +338,37 @@ const CardStack = ({
         </div>
       </div>
 
-      {showDots && (
-        <div className="mt-3 flex items-center justify-center gap-2 bg-white">
-          {items.map((item, index) => {
-            const isActive = index === active;
+      {length > 1 && (
+        <div className="-mt-4 flex items-center justify-center gap-3 sm:-mt-5 sm:gap-4">
+          <button
+            type="button"
+            onClick={previous}
+            className="group flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-950 shadow-[0_2px_8px_rgba(15,23,42,0.03)] transition duration-300 hover:-translate-x-0.5 hover:border-rose-200 hover:text-rose-700 sm:shadow-[0_10px_24px_rgba(15,23,42,0.08)]"
+            aria-label="Previous featured story"
+          >
+            <ArrowLeft
+              size={17}
+              className="transition duration-300 group-hover:-translate-x-0.5"
+            />
+          </button>
 
-            return (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => setActive(index)}
-                className={cn(
-                  "h-2.5 rounded-full transition-all duration-300",
-                  isActive
-                    ? "w-8 bg-rose-600"
-                    : "w-2.5 bg-rose-200 hover:bg-rose-300"
-                )}
-                aria-label={`Go to featured story ${index + 1}`}
-              />
-            );
-          })}
+          <div className="flex min-w-[78px] items-center justify-center rounded-full border border-slate-100 bg-white px-4 py-2 shadow-[0_2px_8px_rgba(15,23,42,0.02)] sm:min-w-[86px] sm:shadow-[0_10px_24px_rgba(15,23,42,0.05)]">
+            <span className="text-xs font-black tracking-[0.14em] text-slate-500">
+              {active + 1}/{length}
+            </span>
+          </div>
+
+          <button
+            type="button"
+            onClick={next}
+            className="group flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-950 shadow-[0_2px_8px_rgba(15,23,42,0.03)] transition duration-300 hover:translate-x-0.5 hover:border-rose-200 hover:text-rose-700 sm:shadow-[0_10px_24px_rgba(15,23,42,0.08)]"
+            aria-label="Next featured story"
+          >
+            <ArrowRight
+              size={17}
+              className="transition duration-300 group-hover:translate-x-0.5"
+            />
+          </button>
         </div>
       )}
     </div>
@@ -387,92 +378,78 @@ const CardStack = ({
 const FeaturedFanCard = ({ item, active }) => {
   const story = item.story;
   const theme = sideTheme[story.side] || sideTheme.both;
-  const Icon = theme.icon;
 
-  const previewLimit = active ? 210 : 95;
+  const previewLimit = active ? 260 : 120;
 
   return (
     <div
       className={cn(
-        `relative flex h-full w-full flex-col overflow-hidden bg-gradient-to-br ${theme.softClass}`,
-        !active && "brightness-[0.985]"
+        "relative flex h-full w-full flex-col overflow-hidden",
+        active
+          ? "bg-[linear-gradient(135deg,rgba(255,255,255,0.99),rgba(240,249,255,0.96),rgba(255,241,242,0.96),rgba(255,251,235,0.88))]"
+          : `bg-gradient-to-br ${theme.softClass}`
       )}
     >
-      <div
-        className={`pointer-events-none absolute -right-16 -top-16 h-44 w-44 rounded-full ${theme.glowClass} blur-3xl`}
-      />
-      <div className="pointer-events-none absolute -left-12 bottom-0 h-36 w-36 rounded-full bg-white/90 blur-3xl" />
-      <div className="pointer-events-none absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-white to-transparent" />
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.92),rgba(255,255,255,0.60),rgba(255,255,255,0.92))]" />
-
-      {!active && (
-        <>
-          <div className="pointer-events-none absolute inset-0 bg-white/30 backdrop-blur-[2.7px]" />
-          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.38),rgba(255,255,255,0.10),rgba(255,255,255,0.32))]" />
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-white/78 via-white/36 to-transparent" />
-        </>
-      )}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-2.5 overflow-hidden">
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,#60a5fa_0%,#22d3ee_16%,#34d399_32%,#facc15_50%,#fb7185_68%,#c084fc_84%,#38bdf8_100%)]" />
+        <div className="absolute inset-x-0 top-0 h-[1px] bg-white/95" />
+        <div className="absolute inset-x-0 top-0 h-full bg-[linear-gradient(180deg,rgba(255,255,255,0.65),rgba(255,255,255,0.03))]" />
+      </div>
 
       <div
         className={cn(
-          "relative flex h-full min-h-0 flex-col p-5 sm:p-6",
-          !active && "select-none"
+          "pointer-events-none absolute -right-16 -top-16 hidden h-44 w-44 rounded-full blur-3xl sm:block",
+          active ? "bg-rose-100/70" : theme.glowClass
         )}
-      >
-        <div className="flex shrink-0 items-start justify-between gap-4">
-          <div
-            className={cn(
-              `flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br ${theme.iconClass} text-white shadow-lg shadow-rose-100`,
-              !active && "scale-[0.96] opacity-95"
-            )}
-          >
-            <Icon size={23} />
-          </div>
+      />
+      <div className="pointer-events-none absolute -left-12 bottom-0 hidden h-36 w-36 rounded-full bg-sky-50/80 blur-3xl sm:block" />
+      <div className="pointer-events-none absolute right-8 top-12 hidden h-20 w-20 rounded-full bg-amber-100/30 blur-3xl sm:block" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.28),rgba(255,255,255,0.02))] sm:bg-[linear-gradient(180deg,rgba(255,255,255,0.55),rgba(255,255,255,0.04))]" />
 
-          <Quote
-            size={34}
-            className={cn(
-              "shrink-0 text-rose-200 transition duration-300",
-              active ? "scale-110 text-rose-300" : "opacity-70"
-            )}
-            fill="currentColor"
-          />
-        </div>
-
-        <div className="mt-5 flex shrink-0 flex-wrap items-center gap-2">
+      <div className="relative flex h-full min-h-0 flex-col p-4 pt-6 text-left sm:p-6 sm:pt-7">
+        <div className="flex shrink-0 items-center justify-between gap-3">
           <span
-            className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.14em] ${theme.badgeClass}`}
+            className={cn(
+              "inline-flex max-w-[210px] items-center rounded-full border px-3 py-1.5 text-[9px] font-black uppercase tracking-[0.11em] sm:max-w-none sm:px-4 sm:text-[10px] sm:tracking-[0.13em]",
+              theme.badgeClass
+            )}
           >
-            <Icon size={12} />
             {theme.label}
           </span>
 
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-100 bg-amber-50 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.14em] text-amber-700">
-            <Star size={12} fill="currentColor" />
-            Featured
-          </span>
+          <span className="h-2 w-10 shrink-0 rounded-full bg-[linear-gradient(90deg,#60a5fa_0%,#22d3ee_16%,#34d399_32%,#facc15_50%,#fb7185_68%,#c084fc_84%,#38bdf8_100%)] shadow-[0_2px_10px_rgba(236,72,153,0.22)] sm:w-12" />
         </div>
 
-        <div className="mt-5 min-h-0 flex-1 overflow-hidden">
+        <div
+          className={cn(
+            "mt-5 min-h-0 flex-1 overflow-hidden sm:mt-6",
+            active ? "max-h-[12.6rem]" : "max-h-[6.4rem]"
+          )}
+        >
           <p
             className={cn(
-              "font-bold text-slate-800 transition-all duration-300",
+              "font-bold transition-all duration-300",
               active
-                ? "line-clamp-5 text-[15px] leading-7"
-                : "line-clamp-3 text-[14px] leading-6 opacity-85"
+                ? "line-clamp-6 text-[14px] leading-7 text-slate-800 sm:line-clamp-5 sm:text-[16px] sm:leading-8"
+                : "line-clamp-4 text-[13px] leading-6 text-slate-700 sm:text-[14px]"
             )}
           >
             “{getPreviewText(story.story, previewLimit)}”
           </p>
         </div>
 
-        <div className="mt-5 flex shrink-0 items-center gap-3 border-t border-rose-100 pt-4">
-          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white text-sm font-black text-rose-700 shadow-md shadow-rose-100">
+        <div className="mt-4 flex shrink-0 items-center gap-3 pt-2 sm:mt-5 sm:pt-3">
+          <div
+            className={cn(
+              "flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-sm font-black shadow-[0_6px_16px_rgba(15,23,42,0.04)] sm:h-12 sm:w-12 sm:shadow-[0_10px_22px_rgba(15,23,42,0.08)]",
+              theme.avatarClass
+            )}
+          >
             {getInitials(story.name)}
           </div>
 
           <div className="min-w-0 flex-1">
-            <p className="truncate text-base font-black text-slate-950">
+            <p className="truncate text-base font-black text-slate-950 sm:text-lg">
               {story.name || "Guest"}
             </p>
             <p className="truncate text-xs font-bold text-slate-500">
@@ -486,8 +463,8 @@ const FeaturedFanCard = ({ item, active }) => {
 };
 
 const StoryStackSkeleton = () => (
-  <div className="relative flex min-h-[390px] items-end justify-center rounded-[2rem] border border-white bg-white p-4">
-    <div className="relative h-[320px] w-full max-w-[430px] animate-pulse rounded-[2rem] border border-rose-100 bg-white shadow-[0_28px_80px_rgba(190,18,60,0.10)]" />
+  <div className="relative flex min-h-[390px] items-end justify-center rounded-[2rem] bg-transparent p-4">
+    <div className="relative h-[320px] w-full max-w-[430px] animate-pulse rounded-[2rem] border border-slate-200 bg-white shadow-[0_8px_18px_rgba(15,23,42,0.03)] sm:shadow-[0_20px_55px_rgba(15,23,42,0.08)]" />
   </div>
 );
 
@@ -521,69 +498,71 @@ const FeaturedCircleOfLove = () => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.18 }}
       transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-      className="relative overflow-hidden rounded-[2rem] border border-slate-100 bg-white p-4 sm:rounded-[2.7rem] sm:p-6 lg:p-8"
+      className="relative overflow-hidden rounded-[2rem] border border-slate-200/90 bg-white px-3 py-5 shadow-none sm:rounded-[2.7rem] sm:bg-gradient-to-br sm:from-white sm:via-rose-50/35 sm:to-slate-50/70 sm:p-6 sm:shadow-[0_20px_55px_rgba(15,23,42,0.05),0_8px_20px_rgba(255,255,255,0.8)_inset] lg:p-8"
     >
-      <div className="relative z-10">
-        <div className="mx-auto max-w-4xl text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-rose-100 bg-white/80 px-4 py-2 text-[10px] font-black uppercase tracking-[0.18em] text-rose-700 shadow-sm shadow-rose-100/60 backdrop-blur-xl">
-            <MessageCircleHeart size={14} />
-            Featured Circle of Love
-          </span>
+      <div className="pointer-events-none absolute inset-0 rounded-[inherit] bg-white/96 sm:bg-[linear-gradient(180deg,rgba(255,255,255,0.78),rgba(255,255,255,0.18)_36%,rgba(255,255,255,0.42)_100%)]" />
+      <div className="pointer-events-none absolute inset-x-12 top-0 hidden h-px bg-white/90 sm:block" />
+      <div className="pointer-events-none absolute -left-16 top-10 hidden h-44 w-44 rounded-full bg-rose-100/45 blur-3xl sm:block" />
+      <div className="pointer-events-none absolute -right-16 bottom-8 hidden h-44 w-44 rounded-full bg-sky-100/35 blur-3xl sm:block" />
 
-          <h2 className="mx-auto mt-5 max-w-3xl font-['Playfair_Display',serif] text-4xl font-black leading-tight tracking-tight text-slate-950 sm:text-5xl lg:text-[3.35rem]">
-            Blessings selected from the togetherness wall.
+      <div className="relative z-10">
+        <div className="mx-auto max-w-5xl text-center">
+          <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <span className="inline-flex items-center gap-2 rounded-full border border-rose-100 bg-white/85 px-4 py-2 text-[9px] font-black uppercase tracking-[0.15em] text-rose-700 shadow-sm shadow-rose-100/60 backdrop-blur-xl sm:text-[10px] sm:tracking-[0.18em]">
+              <MessageCircleHeart size={14} />
+              Featured Circle of Love
+            </span>
+
+            <Link
+              to="/circle-of-love"
+              className="inline-flex items-center gap-1.5 rounded-full border border-slate-100 bg-white/80 px-4 py-2 text-[9px] font-black uppercase tracking-[0.14em] text-slate-500 shadow-sm shadow-slate-100 transition duration-300 hover:border-rose-100 hover:text-rose-700 sm:text-[10px] sm:tracking-[0.16em]"
+            >
+              View wall
+              <ArrowRight size={12} />
+            </Link>
+          </div>
+
+          <h2 className="mx-auto mt-4 max-w-[18rem] text-center font-['Playfair_Display',serif] text-[2.15rem] font-black leading-[1.08] tracking-tight text-slate-950 sm:mt-5 sm:max-w-3xl sm:text-5xl sm:leading-tight lg:text-[3.2rem]">
+            <span className="block sm:inline">Little notes.</span>{" "}
+            <span className="block sm:inline">Big smiles.</span>
           </h2>
 
-          <p className="mx-auto mt-4 max-w-2xl text-sm font-semibold leading-7 text-slate-600 sm:text-base sm:leading-8">
-            Featured messages chosen from the admin panel are presented as a premium
-            interactive card stack, keeping the Home page clean while still showing every
-            highlighted blessing.
+          <p className="mx-auto mt-3 max-w-[20rem] text-center text-[13.5px] font-semibold leading-6 text-slate-600 sm:max-w-3xl sm:text-base sm:leading-8 lg:max-w-none lg:whitespace-nowrap">
+            A playful peek at the sweetest guest messages picked from the
+            celebration wall.
           </p>
         </div>
 
-        <div className="mt-3">
+        <div className="mt-2 sm:mt-3">
           {isLoading && <StoryStackSkeleton />}
 
           {!isLoading && stackItems.length > 0 && (
-            <div className="relative rounded-[2rem] border border-white bg-white p-2 sm:p-3">
-              <div className="relative bg-white">
-                <CardStack
-                  items={stackItems}
-                  maxVisible={Math.min(7, Math.max(3, stackItems.length))}
-                  autoAdvance={stackItems.length > 1}
-                  intervalMs={3200}
-                  showDots={stackItems.length > 1}
-                  renderCard={(item, state) => (
-                    <FeaturedFanCard item={item} active={state.active} />
-                  )}
-                />
-
-                <div className="mt-4 flex justify-center bg-white">
-                  <Link
-                    to="/circle-of-love"
-                    className="inline-flex items-center gap-2 rounded-full bg-slate-950 px-6 py-3 text-sm font-black text-white shadow-[0_16px_34px_rgba(15,23,42,0.16)] transition duration-300 hover:-translate-y-0.5 hover:bg-rose-700"
-                  >
-                    Explore all
-                    <ArrowRight size={15} />
-                  </Link>
-                </div>
-              </div>
+            <div className="relative">
+              <CardStack
+                items={stackItems}
+                maxVisible={Math.min(7, Math.max(3, stackItems.length))}
+                autoAdvance={stackItems.length > 1}
+                intervalMs={3400}
+                renderCard={(item, state) => (
+                  <FeaturedFanCard item={item} active={state.active} />
+                )}
+              />
             </div>
           )}
 
           {!isLoading && stackItems.length === 0 && (
-            <div className="rounded-[2rem] border border-dashed border-rose-200 bg-white p-7 text-center">
+            <div className="rounded-[2rem] border border-dashed border-rose-200 bg-white/80 p-7 text-center shadow-[0_8px_18px_rgba(15,23,42,0.03)] sm:shadow-[0_14px_36px_rgba(15,23,42,0.04)]">
               <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-rose-700 shadow-lg shadow-rose-100">
                 <Heart size={25} fill="currentColor" />
               </div>
 
               <h3 className="mt-4 text-xl font-black text-slate-950">
-                Featured stories will appear here
+                Guest notes will appear here
               </h3>
 
               <p className="mx-auto mt-2 max-w-xl text-sm font-semibold leading-7 text-slate-600">
-                Once Circle of Love messages are approved and featured from the admin panel,
-                the selected blessings will automatically show on Home.
+                Once messages are approved and selected from the admin panel,
+                the sweetest notes will automatically show on Home.
               </p>
             </div>
           )}
@@ -615,18 +594,13 @@ const ChampionOrbit = ({
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true }}
       transition={{ duration: 0.45 }}
-      className={`relative overflow-hidden rounded-[2rem] border bg-white/90 p-4 backdrop-blur-2xl transition duration-300 ${
+      className={cn(
+        "relative overflow-hidden rounded-[2rem] border bg-white/95 p-4 backdrop-blur-2xl transition duration-300",
         isWinner
-          ? "border-rose-200 shadow-[0_24px_65px_rgba(190,18,60,0.14)]"
-          : "border-slate-100 shadow-[0_16px_42px_rgba(15,23,42,0.06)]"
-      }`}
+          ? "border-rose-100 shadow-[0_10px_22px_rgba(15,23,42,0.035)]"
+          : "border-slate-100 shadow-[0_8px_18px_rgba(15,23,42,0.03)]"
+      )}
     >
-      <div
-        className={`pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full blur-3xl ${
-          isKevin ? "bg-blue-100" : "bg-pink-100"
-        }`}
-      />
-
       <div className="relative flex items-center gap-4">
         <div className="relative flex h-20 w-20 shrink-0 items-center justify-center">
           <div
@@ -634,15 +608,15 @@ const ChampionOrbit = ({
             style={{
               background: `conic-gradient(${
                 isKevin ? "#0ea5e9" : "#f43f5e"
-              } ${percentage * 3.6}deg, #f1f5f9 0deg)`,
+              } ${percentage * 3.6}deg, #e5e7eb 0deg)`,
             }}
           />
-          <div className="absolute inset-[7px] rounded-full bg-white" />
+          <div className="absolute inset-[8px] rounded-full bg-white" />
           <div
-            className={`relative flex h-12 w-12 items-center justify-center rounded-full text-white shadow-lg ${
+            className={`relative flex h-12 w-12 items-center justify-center rounded-full text-white shadow-sm ${
               isKevin
-                ? "bg-gradient-to-br from-blue-500 to-cyan-400 shadow-blue-100"
-                : "bg-gradient-to-br from-pink-500 to-rose-500 shadow-pink-100"
+                ? "bg-gradient-to-br from-sky-500 to-blue-500"
+                : "bg-gradient-to-br from-pink-500 to-rose-500"
             }`}
           >
             <Icon size={21} />
@@ -656,7 +630,7 @@ const ChampionOrbit = ({
             {isWinner && (
               <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-1 text-[9px] font-black uppercase tracking-[0.14em] text-amber-700">
                 <Trophy size={11} />
-                Leading
+                Sweet lead
               </span>
             )}
           </div>
@@ -702,50 +676,52 @@ const OverallPollChampion = () => {
       }
     );
 
-    const totalVotes = Number(apiStats.totalVotes ?? fallbackStats.totalVotes ?? 0);
-    const kevinVotes = Number(apiStats.kevinVotes ?? fallbackStats.kevinVotes ?? 0);
-    const jenithVotes = Number(apiStats.jenithVotes ?? fallbackStats.jenithVotes ?? 0);
+    const totalVotes = Number(
+      apiStats.totalVotes ?? fallbackStats.totalVotes ?? 0
+    );
+    const kevinVotes = Number(
+      apiStats.kevinVotes ?? fallbackStats.kevinVotes ?? 0
+    );
+    const jenithVotes = Number(
+      apiStats.jenithVotes ?? fallbackStats.jenithVotes ?? 0
+    );
 
     return {
       totalVotes,
       kevinVotes,
       jenithVotes,
-      kevinPercentage: totalVotes ? Math.round((kevinVotes / totalVotes) * 100) : 0,
-      jenithPercentage: totalVotes ? Math.round((jenithVotes / totalVotes) * 100) : 0,
+      kevinPercentage: totalVotes
+        ? Math.round((kevinVotes / totalVotes) * 100)
+        : 0,
+      jenithPercentage: totalVotes
+        ? Math.round((jenithVotes / totalVotes) * 100)
+        : 0,
     };
   }, [data?.stats, polls]);
 
   const champion = useMemo(() => {
     if (!stats.totalVotes) {
       return {
-        name: "Waiting for votes",
-        helper: "Once guests vote, the overall poll champion will appear here.",
+        text: "Waiting for the first sweet vote.",
         icon: Vote,
-        winner: "none",
       };
     }
 
     if (stats.kevinVotes === stats.jenithVotes) {
       return {
-        name: "Kevin & Jenith are tied",
-        helper: "Both sides are sharing the spotlight equally right now.",
+        text: "Both hearts are perfectly in sync.",
         icon: Heart,
-        winner: "tie",
       };
     }
 
     return stats.kevinVotes > stats.jenithVotes
       ? {
-          name: "Kevin is leading overall",
-          helper: "Kevin currently has the higher total across all Couple Polls.",
+          text: "Kevin is collecting a few extra cheers.",
           icon: Crown,
-          winner: "kevin",
         }
       : {
-          name: "Jenith is leading overall",
-          helper: "Jenith currently has the higher total across all Couple Polls.",
+          text: "Jenith is collecting a few extra cheers.",
           icon: Gem,
-          winner: "jenith",
         };
   }, [stats]);
 
@@ -759,79 +735,80 @@ const OverallPollChampion = () => {
       transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
       className="relative overflow-hidden bg-white px-0 py-8 sm:py-10 lg:py-12"
     >
-      <div className="pointer-events-none absolute left-1/2 top-0 h-72 w-72 -translate-x-1/2 rounded-full bg-rose-100/45 blur-3xl" />
-      <div className="pointer-events-none absolute -left-24 bottom-0 h-72 w-72 rounded-full bg-blue-100/40 blur-3xl" />
-      <div className="pointer-events-none absolute -right-24 bottom-6 h-72 w-72 rounded-full bg-pink-100/45 blur-3xl" />
-
       <div className="relative z-10 mx-auto max-w-6xl">
         <div className="mx-auto max-w-3xl text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-rose-100 bg-white/80 px-4 py-2 text-[10px] font-black uppercase tracking-[0.18em] text-rose-700 shadow-sm shadow-rose-100/60 backdrop-blur-xl">
-            <BarChart3 size={14} />
-            Overall Poll Champion
-          </span>
+          <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <span className="inline-flex items-center gap-2 rounded-full border border-rose-100 bg-white/90 px-4 py-2 text-[10px] font-black uppercase tracking-[0.18em] text-rose-700 shadow-sm shadow-rose-100/40 backdrop-blur-xl">
+              <BarChart3 size={14} />
+              Couple Polls
+            </span>
 
-          <h2 className="mx-auto mt-5 max-w-3xl font-['Playfair_Display',serif] text-4xl font-black leading-tight tracking-tight text-slate-950 sm:text-5xl lg:text-[3.35rem]">
-            Who is winning the celebration polls?
+            <Link
+              to="/couple-polls"
+              className="inline-flex items-center gap-1.5 rounded-full border border-slate-100 bg-white/90 px-4 py-2 text-[10px] font-black uppercase tracking-[0.16em] text-slate-500 shadow-sm shadow-slate-100 transition duration-300 hover:border-rose-100 hover:text-rose-700"
+            >
+              Play polls
+              <ArrowRight size={12} />
+            </Link>
+          </div>
+
+          <h2 className="mx-auto mt-5 max-w-2xl font-['Playfair_Display',serif] text-[2rem] font-black leading-tight tracking-tight text-slate-950 sm:text-[2.5rem] lg:text-[2.9rem]">
+            Smiles on the scorecard.
           </h2>
 
-          <p className="mx-auto mt-4 max-w-2xl text-sm font-semibold leading-7 text-slate-600 sm:text-base sm:leading-8">
-            A live overall result from every approved Couple Poll question, shown as
-            one clean celebration champion instead of a boxy dashboard.
+          <p className="mx-auto mt-3 max-w-2xl text-sm font-semibold leading-7 text-slate-600 sm:text-base sm:leading-8">
+            A sweet little peek at how our favorite people are cheering for
+            Kevin and Jenith.
           </p>
         </div>
 
-        <div className="relative mx-auto mt-9 flex max-w-5xl flex-col items-center">
-          <div className="pointer-events-none absolute top-16 h-72 w-72 rounded-full bg-white blur-3xl" />
-
-          <div className="relative flex h-[19rem] w-[19rem] items-center justify-center rounded-full bg-white shadow-[0_30px_90px_rgba(190,18,60,0.12)] sm:h-[22rem] sm:w-[22rem]">
+        <div className="relative mx-auto mt-8 flex max-w-5xl flex-col items-center sm:mt-9">
+          <div className="relative flex h-[18rem] w-[18rem] items-center justify-center rounded-full bg-white sm:h-[21rem] sm:w-[21rem]">
             <motion.div
               animate={{ rotate: 360 }}
-              transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
+              transition={{ duration: 26, repeat: Infinity, ease: "linear" }}
               className="absolute inset-0 rounded-full"
               style={{
                 background:
-                  "conic-gradient(from 180deg, rgba(14,165,233,0.22), rgba(244,63,94,0.28), rgba(251,191,36,0.18), rgba(14,165,233,0.22))",
+                  "conic-gradient(from 180deg, rgba(14,165,233,0.16), rgba(244,63,94,0.18), rgba(251,191,36,0.1), rgba(14,165,233,0.16))",
               }}
             />
 
             <div className="absolute inset-[10px] rounded-full bg-white" />
 
-            <div className="absolute -left-3 top-12 hidden min-w-[104px] items-center justify-center gap-2 rounded-full border border-blue-100 bg-white px-4 py-3 shadow-[0_18px_45px_rgba(14,165,233,0.14)] sm:flex">
-              <Crown size={18} className="text-blue-600" />
-              <span className="text-sm font-black text-slate-700">
-                {stats.kevinPercentage || 0}%
-              </span>
-            </div>
+            <div className="absolute left-5 top-8 h-3 w-3 rounded-full bg-sky-200/70" />
+            <div className="absolute right-7 top-12 h-2.5 w-2.5 rounded-full bg-rose-200/80" />
+            <div className="absolute bottom-8 right-10 h-3 w-3 rounded-full bg-amber-200/80" />
+            <div className="absolute bottom-10 left-8 h-2.5 w-2.5 rounded-full bg-blue-100/80" />
 
-            <div className="absolute -right-3 bottom-14 hidden min-w-[104px] items-center justify-center gap-2 rounded-full border border-pink-100 bg-white px-4 py-3 shadow-[0_18px_45px_rgba(244,63,94,0.14)] sm:flex">
-              <Gem size={18} className="text-rose-600" />
-              <span className="text-sm font-black text-slate-700">
-                {stats.jenithPercentage || 0}%
-              </span>
-            </div>
+            <div className="relative z-10 flex h-[14.5rem] w-[14.5rem] flex-col items-center justify-center rounded-full border border-slate-100 bg-[radial-gradient(circle_at_top,rgba(255,255,255,1),rgba(252,252,253,0.97),rgba(249,250,251,0.95))] px-4 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.95)] sm:h-[17rem] sm:w-[17rem]">
+              <div className="inline-flex items-center gap-2 rounded-full border border-slate-100 bg-white px-3 py-2 shadow-[0_8px_16px_rgba(15,23,42,0.04)]">
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-sky-500 to-blue-500 text-white">
+                  <Crown size={15} />
+                </span>
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-rose-500">
+                  <Heart size={15} fill="currentColor" />
+                </span>
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-pink-500 to-rose-500 text-white">
+                  <Gem size={15} />
+                </span>
+              </div>
 
-            <div className="relative z-10 flex h-[15.5rem] w-[15.5rem] flex-col items-center justify-center rounded-full border border-rose-100 bg-white px-5 text-center shadow-inner shadow-rose-50 sm:h-[18rem] sm:w-[18rem]">
-              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-slate-950 text-white shadow-xl shadow-slate-200">
+              <div className="relative mt-5 flex h-16 w-16 items-center justify-center rounded-[1.4rem] bg-slate-950 text-white shadow-[0_16px_28px_rgba(15,23,42,0.12)]">
+                <div className="absolute inset-[1px] rounded-[1.3rem] border border-white/10" />
                 {isLoading ? (
-                  <Loader2 size={27} className="animate-spin" />
+                  <Loader2 size={28} className="animate-spin" />
                 ) : (
-                  <ChampionIcon size={29} />
+                  <ChampionIcon size={28} />
                 )}
               </div>
 
-              <p className="mt-5 text-[10px] font-black uppercase tracking-[0.22em] text-rose-600">
-                Current result
-              </p>
-
-              <h3 className="mt-2 max-w-[13rem] text-2xl font-black leading-tight text-slate-950 sm:text-3xl">
-                {champion.name}
+              <h3 className="mt-5 max-w-[11rem] text-[1.4rem] font-black leading-[1.22] text-slate-950 sm:max-w-[12.5rem] sm:text-[1.7rem]">
+                {champion.text}
               </h3>
 
-              <p className="mt-3 max-w-[13rem] text-xs font-bold leading-5 text-slate-500 sm:text-sm sm:leading-6">
-                {champion.helper}
-              </p>
-
-              <div className="mt-5 rounded-full bg-rose-50 px-4 py-2 text-xs font-black text-rose-700">
+              <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-rose-100 bg-[linear-gradient(135deg,rgba(255,245,247,1),rgba(255,255,255,1))] px-4 py-2.5 text-xs font-black text-rose-700 shadow-[0_10px_22px_rgba(244,63,94,0.06)]">
+                <Sparkles size={14} />
                 {stats.totalVotes || 0} total votes
               </div>
             </div>
@@ -845,7 +822,9 @@ const OverallPollChampion = () => {
             percentage={stats.kevinPercentage || 0}
             icon={Crown}
             side="kevin"
-            isWinner={stats.totalVotes > 0 && stats.kevinVotes >= stats.jenithVotes}
+            isWinner={
+              stats.totalVotes > 0 && stats.kevinVotes >= stats.jenithVotes
+            }
           />
 
           <ChampionOrbit
@@ -854,26 +833,10 @@ const OverallPollChampion = () => {
             percentage={stats.jenithPercentage || 0}
             icon={Gem}
             side="jenith"
-            isWinner={stats.totalVotes > 0 && stats.jenithVotes > stats.kevinVotes}
+            isWinner={
+              stats.totalVotes > 0 && stats.jenithVotes > stats.kevinVotes
+            }
           />
-        </div>
-
-        <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <Link
-            to="/couple-polls"
-            className="group inline-flex items-center gap-3 rounded-full bg-slate-950 px-7 py-3.5 text-sm font-black text-white shadow-[0_18px_40px_rgba(15,23,42,0.16)] transition duration-300 hover:-translate-y-0.5 hover:bg-rose-700"
-          >
-            Vote in Couple Polls
-            <ArrowRight
-              size={17}
-              className="transition duration-300 group-hover:translate-x-1"
-            />
-          </Link>
-
-          <div className="inline-flex items-center gap-2 rounded-full border border-rose-100 bg-white/80 px-5 py-3 text-xs font-black text-slate-500 shadow-sm shadow-rose-100/50">
-            <Sparkles size={15} className="text-rose-500" />
-            {data?.count || polls.length || 0} live polls
-          </div>
         </div>
 
         {isError && (
@@ -888,30 +851,30 @@ const OverallPollChampion = () => {
 
 const HomeInteractiveSpotlightSection = () => {
   return (
-    <section className="relative isolate overflow-hidden bg-white px-4 py-12 sm:px-5 sm:py-14 md:px-6 lg:px-4 lg:py-16">
+    <section className="relative isolate overflow-hidden bg-white px-4 py-6 sm:px-5 sm:py-8 md:px-6 lg:px-4 lg:py-10">
       <div className="pointer-events-none absolute inset-0 bg-white" />
       <div className="pointer-events-none absolute bottom-20 right-0 h-80 w-80 rounded-full bg-slate-100/80 blur-3xl" />
 
       <div className="relative z-10 mx-auto max-w-7xl">
         <motion.div
-          initial={{ opacity: 0, y: 18 }}
+          initial={{ opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.5 }}
-          className="mx-auto mb-9 max-w-3xl text-center"
+          transition={{ duration: 0.45 }}
+          className="mx-auto mb-5 max-w-3xl text-center sm:mb-6"
         >
-          <span className="inline-flex items-center gap-2 rounded-full border border-rose-100 bg-rose-50 px-4 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-rose-600">
-            <WandSparkles size={14} />
-            Togetherness highlights
-          </span>
+          <div className="mx-auto flex items-center justify-center gap-3">
+            <span className="h-px w-10 bg-gradient-to-r from-transparent to-rose-300 sm:w-16" />
+            <span className="h-2 w-2 rounded-full bg-rose-500 shadow-[0_0_18px_rgba(225,29,72,0.45)]" />
+            <span className="h-px w-10 bg-gradient-to-l from-transparent to-rose-300 sm:w-16" />
+          </div>
 
-          <h2 className="mt-4 font-['Playfair_Display',serif] text-4xl font-black leading-tight tracking-tight text-slate-950 sm:text-5xl">
-            Live moments from the celebration
+          <h2 className="mt-4 font-['Playfair_Display',serif] text-3xl font-black leading-tight tracking-tight text-slate-950 sm:text-4xl lg:text-5xl">
+            Togetherness Spotlight
           </h2>
 
-          <p className="mx-auto mt-4 max-w-2xl text-sm font-semibold leading-7 text-slate-600 sm:text-base">
-            Featured memories from Circle of Love and the overall winner from Couple Polls,
-            shown directly from the admin-controlled wedding experience.
+          <p className="mx-auto mt-3 max-w-xl text-xs font-bold uppercase tracking-[0.22em] text-rose-600 sm:text-sm">
+            Circle of Love · Couple Polls
           </p>
         </motion.div>
 
